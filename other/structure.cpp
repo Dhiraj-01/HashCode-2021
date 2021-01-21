@@ -51,7 +51,7 @@ int main()
 
 /* Other important points
 - don't use any macro (except ll)
-- don't use ONLINE_GUDJE macro
+- don't use ONLINE_JUDGE macro
 - use 1 based index for array
 - declare same variable name as given in problem 
 */
