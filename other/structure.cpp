@@ -36,7 +36,19 @@ ll Score(const Input &in, const Output &out)
     // calculate score for current output
     return score;
 }
-
+string redable(ll score) // 1234 => 1,234
+{
+    string s = to_string(score);
+    string res = "";
+    for(ll i = 0; i < s.size(); i++) {
+        res += s[i];
+        if((s.size() - i - 1) % 3 == 0) {
+            res += ',';
+        }
+    }
+    res.pop_back();
+    return res;
+}
 void solve()
 {
     Input in;
