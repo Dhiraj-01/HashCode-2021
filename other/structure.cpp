@@ -30,11 +30,20 @@ Output Solver(Input in)
     return out;
 }
 
+ll Score(const Input &in, const Output &out)
+{
+    ll score = 0;
+    // calculate score for current output
+    return score;
+}
+
 void solve()
 {
     Input in;
     in.scan();
-    Solver(in).print();
+    Output out = Solver(in);
+    out.print();
+    // cerr << "score : " << Score(in, out) << endl;
 }
 
 int main()

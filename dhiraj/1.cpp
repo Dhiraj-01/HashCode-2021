@@ -72,7 +72,8 @@ Output solver(Input in)
     Output out;
 
     ll id = 0;
-    shuffle(in.p.begin(), in.p.end(), rng);
+    vector<Pizza> pp = in.p;
+    shuffle(pp.begin(), pp.end(), rng);
     
     while(id < in.M)
     {
@@ -81,8 +82,8 @@ Output solver(Input in)
             out.D++;
             vector<ll> del;
             del.emplace_back(2);
-            del.emplace_back(in.p[id].id);
-            del.emplace_back(in.p[id + 1].id);
+            del.emplace_back(pp[id].id);
+            del.emplace_back(pp[id + 1].id);
             out.deliveries.emplace_back(del);
             id += 2;
             in.T2--;
@@ -92,9 +93,9 @@ Output solver(Input in)
             out.D++;
             vector<ll> del;
             del.emplace_back(3);
-            del.emplace_back(in.p[id].id);
-            del.emplace_back(in.p[id + 1].id);
-            del.emplace_back(in.p[id + 2].id);
+            del.emplace_back(pp[id].id);
+            del.emplace_back(pp[id + 1].id);
+            del.emplace_back(pp[id + 2].id);
             out.deliveries.emplace_back(del);
             id += 3;
             in.T3--;
@@ -104,10 +105,10 @@ Output solver(Input in)
             out.D++;
             vector<ll> del;
             del.emplace_back(4);
-            del.emplace_back(in.p[id].id);
-            del.emplace_back(in.p[id + 1].id);
-            del.emplace_back(in.p[id + 2].id);
-            del.emplace_back(in.p[id + 3].id);
+            del.emplace_back(pp[id].id);
+            del.emplace_back(pp[id + 1].id);
+            del.emplace_back(pp[id + 2].id);
+            del.emplace_back(pp[id + 3].id);
             out.deliveries.emplace_back(del);
             id += 4;
             in.T4--;
@@ -117,19 +118,50 @@ Output solver(Input in)
     return out;
 }
 
+ll Score(const Input &in, const Output &out)
+{
+    ll score = 0;
+    for(ll i = 0; i < out.D; i++)
+    {
+        set<string> s;
+        for(ll j = 1; j <= out.deliveries[i].front(); j++)
+        {
+            for(const string &ss : in.p[out.deliveries[i][j]].ingre) {
+                s.emplace(ss);
+            }
+        }
+        score += (s.size() * s.size());
+    }
+    return score;
+}
 void solve(int &tc)
 {
     Input in;
     in.scan();
-    solver(in).print();
+    
+    ll best_score = 0;
+    Output best_out;
+    for(ll rep = 0; rep < 100; rep++)
+    {
+        Output out = solver(in);
+        ll cur_score = Score(in, out);
+        if(cur_score > best_score)
+        {
+            best_out = out;
+            best_score = cur_score;
+        }
+        // d(rep, cur_score);
+    }
+    d(best_score);
+    best_out.print();
 }
 
 int main()
 {
-    #ifdef Dhiraj
-        freopen("D:/dhiraj/Github/HashCode-2021/dhiraj/i1.txt", "r", stdin);
-        freopen("D:/dhiraj/Github/HashCode-2021/dhiraj/o1.txt", "w", stdout);
-    #endif
+    // #ifdef Dhiraj
+    //     freopen("D:/dhiraj/Github/HashCode-2021/dhiraj/i1.txt", "r", stdin);
+    //     freopen("D:/dhiraj/Github/HashCode-2021/dhiraj/o1.txt", "w", stdout);
+    // #endif
 
     ios::sync_with_stdio(false);
     cin.tie(0);
