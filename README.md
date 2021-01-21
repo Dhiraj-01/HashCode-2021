@@ -1,3 +1,6 @@
-# Google HashCode-2021
+# Google Hash Code-2021
 
-![image](other/hashcode-img.jpg)
+![hash-code](other/hashcode-img.jpg)
+
+### practice-round-score
+![practice-round-score](other/practice-round-score.PNG)
