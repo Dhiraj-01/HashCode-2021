@@ -11,6 +11,14 @@ using namespace std;
 #define ll long long int
 #define endl '\n'
 
+mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+inline ll rnd(ll l = 0, ll r = 1E9)
+{
+    if(l > r) swap(l, r);
+    return std::uniform_int_distribution<ll>(l, r)(rng);
+    // return std::uniform_real_distribution<long double>(l, r)(rng);
+}
+
 struct Pizza
 {
     ll id;
@@ -25,6 +33,7 @@ struct Pizza
         }
     }
 };
+
 struct Input
 {
     ll M, T2, T3, T4;
@@ -32,8 +41,8 @@ struct Input
     void scan()
     {
         cin >> M >> T2 >> T3 >> T4;
-        p.resize(M + 1);
-        for(ll i = 1; i <= M; i++) {
+        p.resize(M);
+        for(ll i = 0; i < M; i++) {
             p[i].id = i;
             p[i].scan();
         }
@@ -50,7 +59,7 @@ struct Output
     void print() {
         cout << D << endl;
         for(auto &del : deliveries) {
-            for(ll x : del) {
+            for(ll &x : del) {
                 cout << x << " ";
             }
             cout << "\n";
@@ -61,47 +70,47 @@ struct Output
 Output solver(Input in)
 {
     Output out;
+
     ll id = 0;
-    while(in.M > 0)
+    shuffle(in.p.begin(), in.p.end(), rng);
+    
+    while(id < in.M)
     {
-        if(in.T2 > 0 and in.M >= 2)
+        if(in.T2 > 0 and id + 1 < in.M)
         {
             out.D++;
             vector<ll> del;
             del.emplace_back(2);
-            del.emplace_back(id);
-            del.emplace_back(id + 1);
+            del.emplace_back(in.p[id].id);
+            del.emplace_back(in.p[id + 1].id);
             out.deliveries.emplace_back(del);
             id += 2;
             in.T2--;
-            in.M -= 2;
         }
-        else if(in.T3 > 0 and in.M >= 3)
+        else if(in.T3 > 0 and id + 2 < in.M)
         {
             out.D++;
             vector<ll> del;
             del.emplace_back(3);
-            del.emplace_back(id);
-            del.emplace_back(id + 1);
-            del.emplace_back(id + 2);
+            del.emplace_back(in.p[id].id);
+            del.emplace_back(in.p[id + 1].id);
+            del.emplace_back(in.p[id + 2].id);
             out.deliveries.emplace_back(del);
             id += 3;
             in.T3--;
-            in.M -= 3;
         }
-        else if(in.T2 > 0 and in.M >= 4)
+        else if(in.T2 > 0 and id + 3 < in.M)
         {
             out.D++;
             vector<ll> del;
             del.emplace_back(4);
-            del.emplace_back(id);
-            del.emplace_back(id + 1);
-            del.emplace_back(id + 2);
-            del.emplace_back(id + 3);
+            del.emplace_back(in.p[id].id);
+            del.emplace_back(in.p[id + 1].id);
+            del.emplace_back(in.p[id + 2].id);
+            del.emplace_back(in.p[id + 3].id);
             out.deliveries.emplace_back(del);
             id += 4;
             in.T4--;
-            in.M -= 4;
         }
         else break;
     }

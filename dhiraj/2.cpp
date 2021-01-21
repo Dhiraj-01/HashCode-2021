@@ -1,4 +1,4 @@
-friend string to_string(const Pizza &p)
+string to_string(const Pizza &p)
 {
     string res = "";
     #ifdef Dhiraj
