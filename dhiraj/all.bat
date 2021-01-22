@@ -1,16 +1,12 @@
-:: run all file with inputs
 @ECHO OFF
-SET file=1.cpp
-IF NOT '%1%'=='' (
-SET file=%1
-)
 
 :: compile
-ECHO compiling : g++ -std=c++17 %file%
-g++ -std=c++17 %file%
+ECHO compiling : g++ -std=c++17 %*
+g++ -std=c++17 %* || exit /b 0
 
 :: run with multiple input, output files
 FOR /l %%x in (1, 1, 5) do (
-ECHO "a.exe < %%x.txt > %%x.txt"
+echo.
+ECHO "a.exe < i%%x.txt > o%%x.txt"
 a.exe < i%%x.txt > o%%x.txt
 )
