@@ -22,22 +22,35 @@ inline ll rnd(ll l = 0, ll r = 1E9)
 struct Pizza
 {
     ll id;
-    vector<string> ingre;
+    vector<string> ingredients;
     void scan()
     {
         ll x;
         cin >> x;
-        ingre.resize(x);
+        ingredients.resize(x);
         for(ll i = 0; i < x; i++) {
-            cin >> ingre[i];
+            cin >> ingredients[i];
         }
     }
 };
+string to_string(const Pizza &p)
+{
+    string res = "";
+    #ifdef Dhiraj
+    {
+        res += "[";
+        res += to_string(p.id);
+        res += ", " + to_string(p.ingredients);
+        res += "]";
+    }
+    #endif
+    return res;
+}
 
 struct Input
 {
     ll M, T2, T3, T4;
-    vector<Pizza> p;
+    vector<Pizza> p, pp;
     void scan()
     {
         cin >> M >> T2 >> T3 >> T4;
@@ -46,8 +59,10 @@ struct Input
             p[i].id = i;
             p[i].scan();
         }
+        pp = p; // pp just a copy of p, do whatever you want to do with pp
     }
 };
+
 struct Output
 {
     ll D;
@@ -71,49 +86,224 @@ Output solver(Input in)
 {
     Output out;
 
-    ll id = 0;
-    vector<Pizza> pp = in.p;
-    shuffle(pp.begin(), pp.end(), rng);
-    
-    while(id < in.M)
+    ll MM = in.M;
+    ll id_i = 0, id_j = in.M - 1;
+
+    /* input - B
+     
+    auto f = [&](ll x)
     {
-        if(in.T2 > 0 and id + 1 < in.M)
+        ll mx_score = 0;
+        vector<ll> ans{};
+        for(ll i = 0; i < in.M; i++)
         {
+            if(vis[i]) continue;
+            for(ll j = i + 1; j < in.M; j++)
+            {
+                if(vis[j]) continue;
+                if(x == 2) {
+                    if(total(i, j) >= mx_score) {
+
+                    }
+                    mx_score = Max(i, j);
+                    continue;
+                }
+            }
+        }
+        if(x == 1)
+        return ans;
+    };
+
+    vector<bool> vis(MM, 0);
+    for(ll i = 0; i < MM; i++)
+    {
+        if(vis[i]) continue;
+        ll mx_score = 0;
+        for(ll j = i + 1; j < MM; j++)
+        {
+
+            // (i, j)
+        }
+    }
+    return;
+    /*
+
+    shuffle(in.pp.begin(), in.pp.end(), rng);
+    
+    while(MM > 0)
+    {
+        ll r = rnd(0, 10);
+        if(r == 0 and MM >= 2 and in.T2 > 0)
+        {
+            assert(id_i < in.M);
+            assert(id_j >= 0);
+
             out.D++;
             vector<ll> del;
             del.emplace_back(2);
-            del.emplace_back(pp[id].id);
-            del.emplace_back(pp[id + 1].id);
+            del.emplace_back(in.pp[id_i].id);
+            del.emplace_back(in.pp[id_j].id);
             out.deliveries.emplace_back(del);
-            id += 2;
+
             in.T2--;
+            id_i += 1;
+            id_j -= 1;
+            MM -= 2;
         }
-        else if(in.T3 > 0 and id + 2 < in.M)
+        else if(r == 1 and MM >= 3 and in.T3 > 0)
         {
+            assert(id_i < in.M);
+            assert(id_j - 1 >= 0);
+
             out.D++;
             vector<ll> del;
             del.emplace_back(3);
-            del.emplace_back(pp[id].id);
-            del.emplace_back(pp[id + 1].id);
-            del.emplace_back(pp[id + 2].id);
+            del.emplace_back(in.pp[id_i].id);
+            del.emplace_back(in.pp[id_j].id);
+            del.emplace_back(in.pp[id_j - 1].id);
             out.deliveries.emplace_back(del);
-            id += 3;
+
             in.T3--;
+            id_i += 1;
+            id_j -= 2;
+            MM -= 3;
         }
-        else if(in.T2 > 0 and id + 3 < in.M)
+        else if(r == 2 and MM >= 4 and in.T4 > 0)
         {
+            assert(id_i < in.M);
+            assert(id_j - 2 >= 0);
+
             out.D++;
             vector<ll> del;
             del.emplace_back(4);
-            del.emplace_back(pp[id].id);
-            del.emplace_back(pp[id + 1].id);
-            del.emplace_back(pp[id + 2].id);
-            del.emplace_back(pp[id + 3].id);
+            del.emplace_back(in.pp[id_i].id);
+            del.emplace_back(in.pp[id_j].id);
+            del.emplace_back(in.pp[id_j - 1].id);
+            del.emplace_back(in.pp[id_j - 2].id);
             out.deliveries.emplace_back(del);
-            id += 4;
+
             in.T4--;
+            id_i += 1;
+            id_j -= 3;
+            MM -= 4;
         }
-        else break;
+        else if(0) {
+            // 2, 3, 4
+            if(MM >= 2 and in.T2 > 0)
+            {
+                assert(id_i < in.M);
+                assert(id_j >= 0);
+
+                out.D++;
+                vector<ll> del;
+                del.emplace_back(2);
+                del.emplace_back(in.pp[id_i].id);
+                del.emplace_back(in.pp[id_j].id);
+                out.deliveries.emplace_back(del);
+
+                in.T2--;
+                id_i += 1;
+                id_j -= 1;
+                MM -= 2;
+            }
+            else if(MM >= 3 and in.T3 > 0)
+            {
+                assert(id_i < in.M);
+                assert(id_j - 1 >= 0);
+
+                out.D++;
+                vector<ll> del;
+                del.emplace_back(3);
+                del.emplace_back(in.pp[id_i].id);
+                del.emplace_back(in.pp[id_j].id);
+                del.emplace_back(in.pp[id_j - 1].id);
+                out.deliveries.emplace_back(del);
+
+                in.T3--;
+                id_i += 1;
+                id_j -= 2;
+                MM -= 3;
+            }
+            else if(MM >= 4 and in.T4 > 0)
+            {
+                assert(id_i < in.M);
+                assert(id_j - 2 >= 0);
+
+                out.D++;
+                vector<ll> del;
+                del.emplace_back(4);
+                del.emplace_back(in.pp[id_i].id);
+                del.emplace_back(in.pp[id_j].id);
+                del.emplace_back(in.pp[id_j - 1].id);
+                del.emplace_back(in.pp[id_j - 2].id);
+                out.deliveries.emplace_back(del);
+
+                in.T4--;
+                id_i += 1;
+                id_j -= 3;
+                MM -= 4;
+            }
+            else break;
+        }
+        else
+        {
+            // 4 3 2
+            if(MM >= 4 and in.T4 > 0)
+            {
+                assert(id_i < in.M);
+                assert(id_j - 2 >= 0);
+
+                out.D++;
+                vector<ll> del;
+                del.emplace_back(4);
+                del.emplace_back(in.pp[id_i].id);
+                del.emplace_back(in.pp[id_j].id);
+                del.emplace_back(in.pp[id_j - 1].id);
+                del.emplace_back(in.pp[id_j - 2].id);
+                out.deliveries.emplace_back(del);
+
+                in.T4--;
+                id_i += 1;
+                id_j -= 3;
+                MM -= 4;
+            }
+            else if(MM >= 3 and in.T3 > 0)
+            {
+                assert(id_i < in.M);
+                assert(id_j - 1 >= 0);
+
+                out.D++;
+                vector<ll> del;
+                del.emplace_back(3);
+                del.emplace_back(in.pp[id_i].id);
+                del.emplace_back(in.pp[id_j].id);
+                del.emplace_back(in.pp[id_j - 1].id);
+                out.deliveries.emplace_back(del);
+
+                in.T3--;
+                id_i += 1;
+                id_j -= 2;
+                MM -= 3;
+            }
+            else if(MM >= 2 and in.T2 > 0)
+            {
+                assert(id_i < in.M);
+                assert(id_j >= 0);
+
+                out.D++;
+                vector<ll> del;
+                del.emplace_back(2);
+                del.emplace_back(in.pp[id_i].id);
+                del.emplace_back(in.pp[id_j].id);
+                out.deliveries.emplace_back(del);
+
+                in.T2--;
+                id_i += 1;
+                id_j -= 1;
+                MM -= 2;
+            }
+            else break;
+        }
     }
     return out;
 }
@@ -124,9 +314,9 @@ ll Score(const Input &in, const Output &out)
     for(ll i = 0; i < out.D; i++)
     {
         set<string> s;
-        for(ll j = 1; j <= out.deliveries[i].front(); j++)
+        for(ll j = 1; j <= out.deliveries[i][0]; j++)
         {
-            for(const string &ss : in.p[out.deliveries[i][j]].ingre) {
+            for(const string &ss : in.p[out.deliveries[i][j]].ingredients) {
                 s.emplace(ss);
             }
         }
@@ -134,11 +324,37 @@ ll Score(const Input &in, const Output &out)
     }
     return score;
 }
+
+string redable(ll score) // 1234 => 1,234
+{
+    string s = to_string(score);
+    string res = "";
+    for(ll i = 0; i < s.size(); i++) {
+        res += s[i];
+        if((s.size() - i - 1) % 3 == 0) {
+            res += ',';
+        }
+    }
+    res.pop_back();
+    return res;
+}
 void solve(int &tc)
 {
     Input in;
     in.scan();
-    
+
+    // sort(in.pp.begin(), in.pp.end(), [](const Pizza &lhs, const Pizza &rhs)
+    // {
+    //     unordered_set<string> lhs_s, rhs_s;
+    //     for(const string &ss : lhs.ingredients) {
+    //         lhs_s.emplace(ss);
+    //     }
+    //     for(const string &ss : rhs.ingredients) {
+    //         rhs_s.emplace(ss);
+    //     }
+    //     return lhs_s.size() > rhs_s.size();
+    // });
+
     ll best_score = 0;
     Output best_out;
     for(ll rep = 0; rep < 100; rep++)
@@ -150,17 +366,17 @@ void solve(int &tc)
             best_out = out;
             best_score = cur_score;
         }
-        // d(rep, cur_score);
+        d(rep, cur_score, best_score);
     }
-    d(best_score);
+    d(redable(best_score));
     best_out.print();
 }
 
 int main()
 {
     // #ifdef Dhiraj
-    //     freopen("D:/dhiraj/Github/HashCode-2021/dhiraj/i1.txt", "r", stdin);
-    //     freopen("D:/dhiraj/Github/HashCode-2021/dhiraj/o1.txt", "w", stdout);
+    //     freopen("./i4.txt", "r", stdin);
+    //     freopen("./o4.txt", "w", stdout);
     // #endif
 
     ios::sync_with_stdio(false);
@@ -168,7 +384,6 @@ int main()
 
     int tc = 1;
     for(int i = 1; i <= tc; i++) {
-        cerr << "Case #" << i << "\n";
         solve(i);
     }
     return 0;
