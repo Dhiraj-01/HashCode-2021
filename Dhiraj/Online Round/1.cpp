@@ -53,10 +53,37 @@ struct Input
     }
 };
 
+struct Inter
+{
+    ll I, E;
+    vector<pair<string, ll>> street;
+    Inter() {
+        I = -1;
+        E = 0;
+        street.clear();
+    }
+    void print() {
+        cout << I << endl;
+        cout << E << endl;
+        for(ll i = 0; i < E; i++) {
+            cout << street[i].first << " " << street[i].second << endl;
+        }
+    }
+};
+
 struct Output
 {
     ll A;
+    vector<Inter> schedule;
+    Output() {
+        A = 0;
+        schedule.clear();
+    }
     void print() {
+        cout << A << endl;
+        for(ll i = 0; i < A; i++) {
+            schedule[i].print();
+        }
     }
 };
 
@@ -91,8 +118,8 @@ void solve(int &tc)
     Input in;
     in.scan();
     
-    // Output out = Solver(in);
-    // out.print();
+    Output out = Solver(in);
+    out.print();
     
     // ll score = Score(in, out);
     // d(redable(score));
