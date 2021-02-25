@@ -1,6 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#ifdef DHIRAJ
+    #include "D:/dhiraj/Programming/debug.h"
+#else
+    #define d(...) 11
+    #define cerr if(0) cerr
+#endif
+
 #define ll long long int
 #define endl '\n'
 
@@ -42,7 +49,7 @@ string redable(ll score) // 1234 => 1,234
     return res;
 }
 
-void solve()
+void solve(int &tc)
 {
     Input in;
     in.scan();
