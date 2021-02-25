@@ -9,4 +9,4 @@
 ![practice-round-score](Util/practice-round-score.PNG)
 
 ### online-round-score
-![online-round-score](Util/online-round-score.PNG)
+![online-round-score](Util/online-round-score.png)
