@@ -51,7 +51,7 @@ string redable(ll score) // 1234 => 1,234
     return res;
 }
 
-void solve()
+void solve(int &tc)
 {
     Input in;
     in.scan();
