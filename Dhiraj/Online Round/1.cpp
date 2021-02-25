@@ -11,14 +11,51 @@ using namespace std;
 #define ll long long int
 #define endl '\n'
 
+struct Street
+{
+    ll B, E, L;
+    string name;
+    void read() {
+        cin >> B >> E;
+        cin >> name;
+        cin >> L;
+    }
+};
+
+struct Car
+{
+    ll P;
+    vector<string> streets;
+    void read() {
+        cin >> P;
+        streets.resize(P);
+        for(ll i = 0; i < P; i++) {
+            cin >> streets[i];
+        }
+    }
+};
+
 struct Input
 {
+    ll D, I, S, V, F;
+    vector<Street> street;
+    vector<Car> car;
     void scan() {
+        cin >> D >> I >> S >> V >> F;
+        street.resize(S);
+        for(ll i = 0; i < S; i++) {
+            street[i].read();
+        }
+        car.resize(S);
+        for(ll i = 0; i < V; i++) {
+            car[i].read();
+        }
     }
 };
 
 struct Output
 {
+    ll A;
     void print() {
     }
 };
@@ -54,15 +91,21 @@ void solve(int &tc)
     Input in;
     in.scan();
     
-    Output out = Solver(in);
-    out.print();
+    // Output out = Solver(in);
+    // out.print();
     
-    ll score = Score(in, out);
-    d(redable(score));
+    // ll score = Score(in, out);
+    // d(redable(score));
 }
 
 int main()
 {
+    #ifdef DHIRAJ
+        freopen("./i1.txt", "r", stdin);
+        freopen("./o1.txt", "w", stdout);
+        freopen("./e1.txt", "w", stderr);    
+    #endif
+    
     ios::sync_with_stdio(false);
     cin.tie(0);
 
