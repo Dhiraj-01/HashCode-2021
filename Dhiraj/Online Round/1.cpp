@@ -11,6 +11,14 @@ using namespace std;
 #define ll long long int
 #define endl '\n'
 
+mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+inline ll rnd(ll l = 0, ll r = 1E9)
+{
+    if(l > r) swap(l, r);
+    return std::uniform_int_distribution<ll>(l, r)(rng);
+    // return std::uniform_real_distribution<long double>(l, r)(rng);
+}
+
 struct Street
 {
     ll B, E, L;
@@ -24,7 +32,7 @@ struct Street
 
 struct Car
 {
-    ll P;
+    ll P, T = 0;
     vector<string> streets;
     void read() {
         cin >> P;
@@ -46,7 +54,7 @@ struct Input
         for(ll i = 0; i < S; i++) {
             street[i].read();
         }
-        car.resize(S);
+        car.resize(V);
         for(ll i = 0; i < V; i++) {
             car[i].read();
         }
@@ -90,27 +98,49 @@ struct Output
 Output Solver(Input in)
 {
     Output out;
-    return out;
-}
 
-ll Score(const Input &in, const Output &out)
-{
-    ll score = 0;
-    return score;
-}
+    vector<vector<string>> g(in.I);
+    for(ll i = 0; i < in.S; i++) {
+        g[in.street[i].E].push_back(in.street[i].name);
+    }
 
-string redable(ll score) // 1234 => 1,234
-{
-    string s = to_string(score);
-    string res = "";
-    for(ll i = 0; i < s.size(); i++) {
-        res += s[i];
-        if((s.size() - i - 1) % 3 == 0) {
-            res += ',';
+    unordered_map<string, ll> m;
+    vector<ll> fre(in.I, 0);
+    for(ll i = 0; i < in.S; i++) {
+        m[in.street[i].name] = in.street[i].E;
+        fre[in.street[i].E]++;
+    }
+
+    vector<ll> p(in.I);
+    for(ll i = 0; i < in.I; i++) {
+        p[i] = i;
+    }
+    sort(p.begin(), p.end(), [&](const ll &lhs, const ll &rhs) {
+        return fre[lhs] > fre[rhs];
+    });
+
+    out.A = 0;
+    for(ll k = 0; k < in.I; k++) {
+        ll i = p[k];
+        if(fre[i] == 0) break;
+        if(in.D <= 0) break;
+        if(rnd(1, 1)) {
+            out.A++;
+            Inter inter;
+            inter.I = i;
+            for(ll j = 0; j < g[i].size() and in.D > 0; j++) {
+                if(fre[m[g[i][j]]]) {
+                    ll r = rnd(1, fre[m[g[i][j]]]);
+                    r = min(r, in.D);
+                    inter.street.push_back({g[i][j], r});
+                    in.D -= r;
+                }
+            }
+            inter.E = inter.street.size();
+            out.schedule.push_back(inter);
         }
     }
-    res.pop_back();
-    return res;
+    return out;
 }
 
 void solve(int &tc)
@@ -120,9 +150,6 @@ void solve(int &tc)
     
     Output out = Solver(in);
     out.print();
-    
-    // ll score = Score(in, out);
-    // d(redable(score));
 }
 
 int main()
