@@ -1,9 +1,8 @@
 1
 499
-6
-a-ejj 211
-c-ejj 207
-e-ejj 59
-g-ejj 39
-i-ejj 83
-ba-ejj 77
+5
+a-ejj 53
+c-ejj 102
+e-ejj 178
+g-ejj 189
+i-ejj 154
