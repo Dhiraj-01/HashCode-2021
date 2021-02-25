@@ -14,6 +14,7 @@ struct Input
         // scan complete input, according to problem
     }
 };
+
 struct Output
 {
     // all outputs variables
@@ -49,6 +50,7 @@ string redable(ll score) // 1234 => 1,234
     res.pop_back();
     return res;
 }
+
 void solve()
 {
     Input in;
@@ -69,7 +71,7 @@ int main()
     for(int i = 1; i <= tc; i++) {
         solve(i);
     }
-    return 0;
+    return(0);
 }
 
 /* Other important points

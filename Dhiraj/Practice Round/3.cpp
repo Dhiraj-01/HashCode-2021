@@ -277,10 +277,10 @@ void solve(int &tc)
 
 int main()
 {
-    // #ifdef Dhiraj
-    //     freopen("./i4.txt", "r", stdin);
-    //     freopen("./o4.txt", "w", stdout);
-    // #endif
+    #ifdef DHIRAJ
+        freopen("./i4.txt", "r", stdin);
+        freopen("./o4.txt", "w", stdout);
+    #endif
 
     ios::sync_with_stdio(false);
     cin.tie(0);
