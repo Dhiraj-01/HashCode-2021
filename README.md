@@ -10,7 +10,6 @@
 
 ### online-round-score
 
-**rank**
 ![online-round-rank](Util/online-round-rank.png)
 
 ![online-round-score](Util/online-round-score.png)
